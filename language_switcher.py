@@ -9,7 +9,6 @@ prev_active_window = None
 prev_active_window_lock = Lock()
 config = load_json(CONFIG_JSON_PATH)
 
-
 # functions:
 def change_keyboard_language(language_config: dict, active_window_title: str):
     """
