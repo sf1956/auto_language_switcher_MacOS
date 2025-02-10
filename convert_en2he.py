@@ -29,35 +29,6 @@ def load_conversion_map(filename="conversion_map.json"):  # Function to load the
 
 conversion_map = load_conversion_map() # Load the map
 
-# ... (rest of the code - on_press, on_release, convert_to_hebrew functions remain the same)
-
-"""
-def on_press(key):
-    global current_text
-    try:
-        char = key.char
-        current_text += char
-    except AttributeError:
-        if key == pynput.keyboard.Key.space:
-            current_text += " "
-        elif key == pynput.keyboard.Key.backspace:
-            current_text = current_text[:-1]
-        elif key == pynput.keyboard.Key.enter:
-            print("Original (English):", current_text)
-            current_text = ""
-        elif hasattr(key, 'control') and key.control and hasattr(key, 'char') and key.char == 'h': # Correct for macOS (key.control)
-            converted_text = convert_to_hebrew(current_text)
-            bidi_text = bidi.algorithm.get_display(converted_text)
-            print("Converted (Hebrew):", bidi_text)
-            current_text = ""
-
-def on_release(key):
-    if key == pynput.keyboard.Key.esc:
-        return False
-
-"""
-
-
 current_text = ""
 
 def on_press(key):
@@ -83,8 +54,6 @@ def on_press(key):
 def on_release(key):
     if key == pynput.keyboard.Key.esc:
         return False
-
-
 
 def convert_to_hebrew(text):
     converted_text = ""
