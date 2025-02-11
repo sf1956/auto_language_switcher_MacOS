@@ -19,11 +19,13 @@ def re_write_stack() -> None:
     Re-write the keys_pressed stack with the correct typing.
     :return: None
     """
-    print('Re-write activated: fixing typing in wrong language...')
+    print("Re-write activated: fixing typing in wrong language...")
     global keys_pressed, keys_pressed_lock, listen_lock, listen
 
     # Get the fixed keys:
-    fixed_keys_pressed = convert_typing(get_current_layout(), keys_pressed[:-ACTIVATION_SIZE])
+    fixed_keys_pressed = convert_typing(
+        get_current_layout(), keys_pressed[:-ACTIVATION_SIZE]
+    )
     run_fixed_keys = ([keyboard.Key.backspace] * len(keys_pressed)) + fixed_keys_pressed
 
     # Reset the keys_pressed list and change the keyboard layout:
@@ -70,8 +72,9 @@ def register_key(key: keyboard.Key) -> None:
 
     # Check if the activation keys were pressed, if so, re-write the stack:
     if keys_pressed and (len(keys_pressed) > ACTIVATION_SIZE):
-        if (keys_pressed[-ACTIVATION_SIZE:] == PRIME_TYPING_CHANGE_ACTIVATION) or \
-                (keys_pressed[-ACTIVATION_SIZE:] == SECONDARY_TYPING_CHANGE_ACTIVATION):
+        if (keys_pressed[-ACTIVATION_SIZE:] == PRIME_TYPING_CHANGE_ACTIVATION) or (
+            keys_pressed[-ACTIVATION_SIZE:] == SECONDARY_TYPING_CHANGE_ACTIVATION
+        ):
             with listen_lock:
                 listen = False
 
@@ -88,7 +91,7 @@ def reset_keys(x, y, button, pressed) -> None:
 
 
 # main:
-if __name__ == '__main__':
+if __name__ == "__main__":
     # create threads for the keyboard and mouse listeners
     with keyboard.Listener(on_press=register_key) as k_listener:
         with mouse.Listener(on_click=reset_keys) as m_listener:

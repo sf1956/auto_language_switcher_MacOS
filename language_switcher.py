@@ -9,6 +9,9 @@ prev_active_window = None
 prev_active_window_lock = Lock()
 config = load_json(CONFIG_JSON_PATH)
 
+# some comment
+
+
 # functions:
 def change_keyboard_language(language_config: dict, active_window_title: str):
     """
@@ -25,11 +28,15 @@ def change_keyboard_language(language_config: dict, active_window_title: str):
 
     # If the wanted layout is not the current layout, change it:
     if wanted_layout and (wanted_layout != current_layout):
-        print(f'active_window changed to: {active_window_title} -> Changing keyboard layout to: "{wanted_layout}"...')
+        print(
+            f'active_window changed to: {active_window_title} -> Changing keyboard layout to: "{wanted_layout}"...'
+        )
         # Change the keyboard layout to English
         subprocess.call(CHANGE_LANGUAGE_SCRIPT, shell=True)
     else:
-        print(f'active_window changed to: {active_window_title} -> Keyboard layout is already correct.')
+        print(
+            f"active_window changed to: {active_window_title} -> Keyboard layout is already correct."
+        )
 
 
 def window_change(x, y, button, pressed):
@@ -48,7 +55,7 @@ def window_change(x, y, button, pressed):
 
 
 # main:
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_message()
     with keyboard.Listener(on_press=register_key) as k_listener:
         with mouse.Listener(on_click=window_change) as m_listener:
