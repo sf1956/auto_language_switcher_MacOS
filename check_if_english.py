@@ -1,5 +1,5 @@
 import enchant
-import keyboard
+from pynput import keyboard
 
 def is_english_word(word):
     """Checks if a word is in the English dictionary."""
@@ -15,32 +15,42 @@ def is_english_word(word):
 
 current_word = ""
 
-def on_press(event):
+def on_press(key):
     global current_word
-    if event.name is not None:  # Check if it's a character key
-        if event.name.isalnum() or event.name == "space": #Alphanumeric or space
-            if event.name == "space":
-                word_to_check = current_word
-                current_word = ""
-                if word_to_check: # Check if the word is not empty
-                    if is_english_word(word_to_check):
-                        print(f"'{word_to_check}' is an English word.")
-                    else:
-                        print(f"'{word_to_check}' is not an English word.")
-            else:
-                current_word += event.name
-        elif event.name == "backspace":
+    if key == keyboard.Key.esc:
+        return False
+
+    try:
+        if key.char.isalnum():
+            current_word += key.char
+        elif key == keyboard.Key.space or (hasattr(key, 'char') and not key.char.isalnum()):  # Check on space or other key
+            word_to_check = current_word
+            current_word = ""  # Reset for the next word
+            if word_to_check: # Check if the word is not empty
+                if not is_english_word(word_to_check):
+                    print(f"'{word_to_check}' is not an English word. Exiting.")
+                    return False
+                else:
+                    print(f"'{word_to_check}' is an English word.")
+        elif key == keyboard.Key.backspace:
             current_word = current_word[:-1] # Remove last character
-        else: #Other keys
+
+    except AttributeError:  # Special key pressed
+        if key == keyboard.Key.backspace:
+            current_word = current_word[:-1] # Remove last character
+        elif (not hasattr(key, 'char')):  # Other keys
             word_to_check = current_word
             current_word = ""
-            if word_to_check: # Check if the word is not empty
+            if word_to_check:
                 if is_english_word(word_to_check):
                     print(f"'{word_to_check}' is an English word.")
                 else:
-                    print(f"'{word_to_check}' is not an English word.")
+                    print(f"'{word_to_check}' is not an English word. Exiting.")
+                    #return False
 
 
-print("Start typing.  Messages will appear as words are completed.")
-keyboard.on_press(on_press)  # Use keyboard.on_press directly
-keyboard.wait()  # Keep the script running
+with keyboard.Listener(on_press=on_press) as listener:
+    print("Start typing. Words will be checked when completed. Press ESC to exit.")
+    listener.join()
+
+print("Program exited.")
