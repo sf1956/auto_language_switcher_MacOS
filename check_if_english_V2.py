@@ -55,7 +55,6 @@ def english_word_probability(word):
         print(f"An error occurred: {e}")
         return 0.0
 
-
 current_word = ""
 PROBABILITY_THRESHOLD = 0.5  # P% = 50% (adjust as needed)
 
@@ -114,4 +113,3 @@ with keyboard.Listener(on_press=on_press) as listener:
     listener.join()
 
 print("Program exited.")
-
